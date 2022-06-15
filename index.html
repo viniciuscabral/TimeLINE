@@ -1,0 +1,177 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Timeline | Pensadores</title>
+
+  <script src="./js/vis.js"></script>
+  <link href="./js/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />  
+  <style type="text/css">
+    body, html {
+      font-family: sans-serif;
+    }
+
+    /* alternating column backgrounds */
+    .vis-time-axis .vis-grid.vis-odd {
+      background: #f5f5f5;
+    }
+
+    .vis-label {
+      background: #f0eeee;
+      align-content: center;
+      padding: 10px;
+    }
+  
+  </style>
+</head>
+<body>
+    <div style="border: 3px solid green; align-items: center;">
+        <table style="width: 100%;">
+            <tr>
+                <td>
+                    <img  src="https://overlordoftheuberferal.files.wordpress.com/2021/02/schizonietzsche.gif" width="100px" height="100px"/>
+                </td>
+                <td>
+                    <div style=" text-align: center;">
+                        <h2>TIMELINE PENSADORES</h2>
+                        <P>Linha do tempo para visualizar quando os pensadores notáveis do mundo ocidental viveram, em qual época e quantos subexistiram nos mesmos anos.</P>
+                    </div>
+                </td>
+                <td>
+                    <img  src="https://overlordoftheuberferal.files.wordpress.com/2021/02/schizonietzsche.gif" width="100px" height="100px"/>
+                </td>
+            </tr>
+        </table>       
+    </div>
+    <div style="margin: 15px" id="visualization"></div>
+    
+    <script type="text/javascript">
+      
+      // DOM element where the Timeline will be attached
+      var container = document.getElementById('visualization');
+    
+      var groups = new vis.DataSet([
+            {id: 0, content: '<b>França</b>', value: 1},
+            {id: 1, content: 'Inglaterra', value: 3},
+            {id: 2, content: 'Alemanha', value: 2},
+            {id: 4, content: 'Itália', value: 4},
+            {id: 5, content: 'Grécia', value: 5},
+            {id: 6, content: 'Países Baixos', value: 6},
+            {id: 7, content: 'Argélia', value: 7},
+            {id: 8, content: 'Dinamarca', value: 8},
+            {id: 9, content: 'Escócia', value:9},
+            {id: 10, content: 'Áustria', value:10},
+            {id: 11, content: 'Cisjordânia', value:11},
+        ]);
+
+       var data =  [
+            {
+                id:1,                 
+                name:"Voltaire",
+                born:"1694-11-21",
+                died:"1778-05-30",
+                wiki:"https://pt.wikipedia.org/wiki/Voltaire",
+                photo:"https://upload.wikimedia.org/wikipedia/commons/f/f2/Atelier_de_Nicolas_de_Largilli%C3%A8re%2C_portrait_de_Voltaire%2C_d%C3%A9tail_%28mus%C3%A9e_Carnavalet%29_-002.jpg",
+                group:0 
+            },
+            {id: 2, group: 1, name: 'Isaac Newton', born:  new Date(1643,01,04), died:  new Date(1727,03,31),wiki: 'https://pt.wikipedia.org/wiki/Isaac_Newton'},
+            {id: 3, group: 4, name: 'Galileu Galilei', born: new Date(1564,02,15), died: new Date(1642,01,08),wiki: 'https://pt.wikipedia.org/wiki/Galileu_Galilei'},
+            {id: 5, group: 1, name: 'John Locke', born: new Date(1632,08,29), died: new Date(1704,10,28),wiki: 'https://pt.wikipedia.org/wiki/John_Locke'},
+            {id: 7, group: 5, name: 'Platão', born: new Date(-428, 1, 1), died: new Date(-348, 1, 1), wiki: 'https://pt.wikipedia.org/wiki/Plat%C3%A3o'},
+            {id: 8, group: 1, name: 'Thomas More', born: new Date(1478, 02, 07), died: new Date(1535, 07, 06), wiki: 'https://pt.wikipedia.org/wiki/Thomas_More'},
+            {id: 9, group: 4, name: 'Nicolau Maquiavel', born: new Date(1469, 05, 03), died: new Date(1527, 07, 21),wiki:'https://pt.wikipedia.org/wiki/Nicolau_Maquiavel'},
+            {id: 10, group: 0, name: 'Michel de Montaigne', born: new Date(1533, 02, 28), died: new Date(1592, 07, 13), wiki: 'https://pt.wikipedia.org/wiki/Michel_de_Montaigne'},
+            {id: 11, group: 1, name: 'Francis Bacon', born: new Date(1561, 01, 22), died: new Date(1626, 04, 9),wiki:'https://pt.wikipedia.org/wiki/Francis_Bacon'},
+            {id: 12, group: 1, name: 'Thomas Hobbes', born: new Date(1588, 04, 05), died: new Date(1679, 12, 04),wiki: 'https://pt.wikipedia.org/wiki/Thomas_Hobbes'},
+            {id: 13, group: 0, name: 'René Descartes', born: new Date(1596, 03, 31), died: new Date(1650, 02, 11),wiki: 'https://pt.wikipedia.org/wiki/Ren%C3%A9_Descartes'},
+            {id: 14, group: 0, name: 'Blaise Pascal', born: new Date(1623, 06, 19), died: new Date(1662, 08, 19),wiki: 'https://pt.wikipedia.org/wiki/Pascal'},
+            {id: 15, group: 6, name: 'Baruch Espinoza', born: new Date(1632, 11, 24), died: new Date(1677, 02, 21),wiki:'https://pt.wikipedia.org/wiki/Baruch_Espinoza'},
+            {id: 16, group: 2, name: 'Leibniz', born: new Date(1646, 07, 01), died: new Date(1716, 02, 14),wiki:'https://pt.wikipedia.org/wiki/Gottfried_Wilhelm_Leibniz'},
+            {id: 17, group: 0, name: 'Montesquieu', born: new Date(1689, 01,18), died: new Date(1755 , 02, 10),wiki: 'https://pt.wikipedia.org/wiki/Montesquieu'},
+            {id: 18, group: 0, name: 'Jean-Jacques Rousseau', born: new Date(1712, 06, 28), died: new Date(1778  , 07, 02),wiki:'https://pt.wikipedia.org/wiki/Jean-Jacques_Rousseau'},
+            {id: 19, group: 2, name: 'Immanuel Kant', born: new Date(1724, 04, 22), died: new Date(1804, 02, 12),wiki:'https://pt.wikipedia.org/wiki/Immanuel_Kant'},          
+            {id: 20, group: 2, name: 'Georg Wilhelm Friedrich Hegel', born: new Date(1770, 08, 27), died: new Date(1831, 11, 14),wiki: 'https://pt.wikipedia.org/wiki/Georg_Wilhelm_Friedrich_Hegel'},          
+            {id: 21, group: 2, name: 'Arthur Schopenhauer', born: new Date(1788, 02, 22), died: new Date(1860, 02, 22),wiki:'https://pt.wikipedia.org/wiki/Arthur_Schopenhauer'},          
+            {id: 22, group: 2, name: 'Friedrich Nietzsche', born: new Date(1844, 10, 15), died: new Date(1900, 08, 25),wiki:'https://pt.wikipedia.org/wiki/Friedrich_Nietzsche'},          
+            {id: 23, group: 2, name: 'Karl Marx', born: new Date(1818, 05, 05), died: new Date(1883, 03, 14), wiki: 'https://pt.wikipedia.org/wiki/Karl_Marx'},          
+            {id: 24, group: 2, name: 'Martin Heidegger', born: new Date(1889, 09, 26), died: new Date(1976, 05, 26), wiki: 'https://pt.wikipedia.org/wiki/Martin_Heidegger'},          
+            {id: 25, group: 0, name: 'Jean-Paul Sartre', born: new Date(1905, 06, 21), died: new Date(1980, 04, 15),wiki: 'https://pt.wikipedia.org/wiki/Jean-Paul_Sartre'},          
+            {id: 26, group: 5, name: 'Aristóteles', born: new Date(-384, 01, 01), died: new Date(-322, 01, 01),wiki: 'https://pt.wikipedia.org/wiki/Arist%C3%B3teles'},          
+            {id: 27, group: 5, name: 'Epicuro', born: new Date(-341, 01, 01), died: new Date(-270, 01, 01), wiki: 'https://pt.wikipedia.org/wiki/Epicuro'},          
+            {id: 28, group: 5, name: 'Sêneca', born: new Date(-3,00, 01), died: new Date(60,01,01).setFullYear(60),wiki: 'https://pt.wikipedia.org/wiki/S%C3%A9neca'},          
+            {id: 29, group: 11, name: 'Jesus', born: new Date(0, 12, 25).setFullYear(0), died: new Date(-0033, 01, 01).setFullYear(33),wiki:'https://pt.wikipedia.org/wiki/Jesus'},          
+            {id: 30, group: 7, name: 'Agostinho de Hipona', born: new Date(354, 10, 12), died: new Date(430 , 07, 28), wiki: 'https://pt.wikipedia.org/wiki/Agostinho_de_Hipona' },          
+            {id: 31, group: 0, name: 'Pedro Abelardo', born: new Date(1079, 0, 0), died: new Date(1142, 00, 00), wiki: 'https://pt.wikipedia.org/wiki/Pedro_Abelardo'},          
+            {id: 32, group: 5, name: 'Anselmo de Cantuária', born: new Date(1033,0, 0), died: new Date(1109, 03, 21), wiki: 'https://pt.wikipedia.org/wiki/Anselmo_de_Cantu%C3%A1ria'},          
+            {id: 33, group: 1, name: 'David Hume', born: new Date(1711,4, 7), died: new Date(1776, 07, 25),wiki: 'https://pt.wikipedia.org/wiki/David_Hume'},          
+            {id: 34, group: 1, name: 'George Berkeley', born: new Date(1685,2, 12), died: new Date(1753 , 0, 14), wiki: 'https://pt.wikipedia.org/wiki/George_Berkeley'},          
+            {id: 35, group: 0, name: 'Denis Diderot', born: new Date(1713,9, 5), died: new Date(1748, 6, 31),wiki:'https://pt.wikipedia.org/wiki/Denis_Diderot'},          
+            {id: 36, group: 2, name: 'Johann Gottlieb Fichte', born: new Date(1762,4, 19), died: new Date(1814, 0, 27),wiki: 'https://pt.wikipedia.org/wiki/Johann_Gottlieb_Fichte'},          
+            {id: 37, group: 2, name: 'Schelling', born: new Date(1775,0, 27), died: new Date(1854, 7, 20),wiki:'https://pt.wikipedia.org/wiki/Friedrich_Wilhelm_Joseph_von_Schelling'},          
+            {id: 38, group: 8, name: 'Kierkegaard', born: new Date(1813,4, 5), died: new Date(1855, 10, 11),wiki:'https://pt.wikipedia.org/wiki/S%C3%B8ren_Kierkegaard'},          
+            {id: 39, group: 1, name: 'David Ricardo', born: new Date(1772,3, 18), died: new Date(1823, 9, 11),wiki: 'https://pt.wikipedia.org/wiki/David_Ricardo'},          
+            {id: 40, group: 0, name: 'Auguste Comte', born: new Date(1798,0, 19), died: new Date(1857,8, 5),wiki: 'https://pt.wikipedia.org/wiki/Auguste_Comte'},          
+            {id: 41, group: 0, name: 'Émile Durkheim', born: new Date(1858,3, 15), died: new Date(1917,10, 15),wiki: 'https://pt.wikipedia.org/wiki/%C3%89mile_Durkheim'},          
+            {id: 42, group: 1, name: 'John Stuart Mill', born: new Date(1806,4, 20), died: new Date(1873 ,4, 8),wiki: 'https://pt.wikipedia.org/wiki/John_Stuart_Mill'},          
+            {id: 43, group: 2, name: 'Max Weber', born: new Date(1864,3, 21), died: new Date(1920,5, 14),wiki: 'https://pt.wikipedia.org/wiki/Max_Weber'},          
+            {id: 44, group: 0, name: 'Henri Bergson', born: new Date(1859,8, 18), died: new Date(1941,0, 04),wiki: 'https://pt.wikipedia.org/wiki/Henri_Bergson'},          
+            {id: 45, group: 2, name: 'Sigmund Freud', born: new Date(1856,4, 6), died: new Date(1939,8,23), wiki: 'https://pt.wikipedia.org/wiki/Sigmund_Freud'},          
+            {id: 46, group: 2, name: 'Edmund Husserl', born: new Date(1859,3, 8), died: new Date(1938,3,27), wiki: 'https://pt.wikipedia.org/wiki/Edmund_Husserl'},          
+            {id: 47, group: 1, name: 'Bertrand Russell', born: new Date(1872,4, 18), died: new Date(1970,1,02),wiki: 'https://pt.wikipedia.org/wiki/Bertrand_Russell'},      
+            {id: 49, group: 1, name: 'George Edward Moore', born: new Date(1873,10, 4), died: new Date(1958,7,24), wiki: 'https://pt.wikipedia.org/wiki/George_Edward_Moore'},          
+            {id: 50, group: 2, name: 'Karl Popper', born: new Date(1902 ,06, 28), died: new Date(1994,8,27), wiki:'https://pt.wikipedia.org/wiki/Karl_Popper'},          
+            {id: 51, group: 10, name: 'Ludwig Wittgenstein', born: new Date(1889,04,26), died: new Date(1951,04,29),wiki: 'https://pt.wikipedia.org/wiki/Ludwig_Wittgenstein'},          
+            {id: 52, group: 2, name: 'Theodor W. Adorno', born: new Date(1903,08,11), died: new Date(1969,07,06), wiki: 'https://pt.wikipedia.org/wiki/Theodor_W._Adorno'},          
+            {id: 53, group: 2, name: 'Jürgen Habermas', born: new Date(1929 ,05,18),wiki: 'https://pt.wikipedia.org/wiki/J%C3%BCrgen_Habermas'},          
+            {id: 54, group: 4, name: 'Giordano Bruno', born: new Date(1548,00,01), died: new Date(1600 ,01,17), wiki: 'https://pt.wikipedia.org/wiki/Giordano_Bruno'},       
+            {id: 55, group: 4, name: 'Tommaso Campanella', born: new Date(1568,08,05), died: new Date(1639,4,21), wiki: 'https://pt.wikipedia.org/wiki/Tommaso_Campanella'},       
+            {id: 56, group: 4, name: 'Lucrécio', born: new Date().setFullYear(-99), died: new Date().setFullYear(-55), wiki: 'https://pt.wikipedia.org/wiki/Lucr%C3%A9cio'},       
+            {id: 57, group: 4, name: 'Cícero', born: new Date().setFullYear(-106), died: new Date().setFullYear(-46),wiki: 'https://pt.wikipedia.org/wiki/C%C3%ADcero'},       
+            {id: 58, group: 4, name: 'Marco Aurélio', born: new Date(121 ,03,26), died: new Date(180,02,17),wiki: 'https://pt.wikipedia.org/wiki/Marco_Aur%C3%A9lio'},       
+            {id: 59, group: 1, name: 'Adam Smith', born: new Date(1723 ,04,05), died: new Date(1790,04,17),wiki:'https://pt.wikipedia.org/wiki/Adam_Smith'},       
+            ];
+
+            
+            var items = new vis.DataSet({});
+            
+            var dataOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            data.forEach(el =>{
+                items.add([
+                 {id: el.id, group: el.group, content: el.name, start: el.born, end: el.died, title: CreteTitle(el)}]);
+            });
+
+    
+            function CreteTitle(el){
+               return '<img scr="'+el.photo+'" width="50" height="50" /> <br/> <b>'+el.name+'</b> <br/> <b>&#x2605; '+ new Date(el.born).toLocaleDateString('en-us',dataOptions)+' <br/> &#10013; '+new Date(el.died).toLocaleDateString('en-us',dataOptions)+'</b>'
+            }
+
+          
+    
+      // Configuration for the Timeline
+      var options = {
+        width: '100%',
+        maxHeight: '800px',
+        start:new Date(1500, 0, 1),
+        min: new Date(-500, 0, 1),
+        max: new Date(2100, 0, 1),      
+            margin: {
+                item: 5
+            }
+        };      
+    
+      // Create a Timeline      
+         var timeline = new vis.Timeline(container);
+            timeline.setOptions(options);
+            timeline.setGroups(groups);
+            timeline.setItems(items);
+
+            timeline.on('doubleClick', function (properties) {
+                console.log(properties.item);
+                data.forEach(el => {
+                    if (el.id === properties.item){
+                        window.open(el.wiki, '_blank');
+                    }
+                });
+             });
+    </script>
+    </body>
+</html>
